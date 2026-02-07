@@ -91,12 +91,27 @@ print(text)
 Process multiple files through the model:
 
 ```bash
-uv run python batch_processor.py <input_dir> <output_dir> [file_pattern] [num_workers]
+uv run python batch_processor.py <input_dir> <output_dir> [file_pattern] [num_workers] [max_rpm]
 
 # Examples
-uv run python batch_processor.py ./code ./output                    # Process *.rs files
-uv run python batch_processor.py ./code ./output "**/*.py" 4        # Process *.py with 4 workers
+uv run python batch_processor.py ./code ./output                        # Process *.rs files
+uv run python batch_processor.py ./code ./output "**/*.py" 4            # Process *.py with 4 workers
+uv run python batch_processor.py ./code ./output "**/*.py" 8 300        # 8 workers, 300 RPM limit
 ```
+
+Before processing starts, a summary is printed:
+```
+==================================================
+  Batch Processing Summary
+==================================================
+  Files found:    1250
+  Workers:        8
+  Rate limit:     300 requests/min
+  Min duration:   4m 10s (excluding API latency)
+==================================================
+```
+
+The rate limiter uses a token-bucket approach shared across all workers, ensuring the global request rate never exceeds `max_rpm` regardless of how many workers are running or how fast individual calls complete. Default: 300 RPM.
 
 Output structure:
 ```
