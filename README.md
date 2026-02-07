@@ -111,7 +111,9 @@ Before processing starts, a summary is printed:
 ==================================================
 ```
 
-The rate limiter uses a token-bucket approach shared across all workers, ensuring the global request rate never exceeds `max_rpm` regardless of how many workers are running or how fast individual calls complete. Default: 300 RPM.
+**Rate limiter**: Uses a token-bucket approach shared across all workers, ensuring the global request rate never exceeds `max_rpm` regardless of how many workers are running or how fast individual calls complete. Default: 300 RPM.
+
+**Min duration**: The theoretical minimum time the job will take, based only on rate limiter spacing (`60 / max_rpm` seconds between requests). This assumes every API call returns instantly (0 latency). Actual duration will always be longer due to API latency. For small file counts, min duration may be very short (e.g. a few seconds), meaning the rate limiter is not the bottleneck — API latency dominates instead.
 
 Output structure:
 ```

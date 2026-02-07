@@ -155,7 +155,13 @@ def run_batch(
     total_files = len(files)
 
     # Pre-run summary
-    min_duration = total_files / max_rpm * 60  # seconds, assuming instant responses
+    # min_duration: theoretical minimum time based only on rate limiter spacing.
+    # The rate limiter enforces a gap of (60 / max_rpm) seconds between requests.
+    # Even if every API call returned instantly (0 latency), this is the minimum
+    # time needed. Actual duration will be longer due to API latency.
+    # For small file counts, min_duration may be very short (e.g. 3s), meaning
+    # the rate limiter is not the bottleneck — API latency dominates instead.
+    min_duration = total_files / max_rpm * 60  # seconds
     print(f"{'='*50}")
     print(f"  Batch Processing Summary")
     print(f"{'='*50}")
