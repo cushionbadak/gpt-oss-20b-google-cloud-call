@@ -119,7 +119,7 @@ Output structure:
 ```
 output/
 ├── files_found.txt           # List of all processed files
-├── processing_log.1.txt      # Worker logs ([PROCESSED], [EMPTY], [ERROR], [GEN_NONE])
+├── processing_log.1.txt      # Worker logs ([PROCESSED], [EMPTY], [ERROR], [NO_CHOICES], [GEN_NONE])
 ├── raw_responses/            # Full API responses
 │   └── path/to/file.txt
 └── generated_texts/          # Generated text only

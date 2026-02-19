@@ -107,6 +107,11 @@ def process_file(batch_config: BatchConfig, input_filepath: Path) -> int:
     with open(raw_path, "w", encoding="utf-8") as f:
         f.write(str(response))
 
+    if not response.choices:
+        with open(log_path, "a", encoding="utf-8") as log:
+            log.write(f"[NO_CHOICES] {relative_path}\n")
+        return idx
+
     generated_text = response.choices[0].message.content
     if generated_text:
         with open(gen_path, "w", encoding="utf-8") as f:
